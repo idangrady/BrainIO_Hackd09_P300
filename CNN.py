@@ -51,9 +51,16 @@ model = nn.Sequential(
     nn.Conv2d(1,1,3),
     nn.SELU(),
     nn.Flatten(),
-    nn.Linear(28, 1), # Output size of the previous layer, output size = 1 (probability)
+    nn.Linear(238, 1), # Output size of the previous layer, output size = 1 (probability)
     nn.Sigmoid() # proba
 )
+
+# x = dataset['X'][0]
+# label = dataset['labels'][0]
+# print( x.size())
+# print(label)
+# out = model(x)
+# print(out.size())
 
 # === init weights # TODO see what is best with CNN
 # for layer in model:
