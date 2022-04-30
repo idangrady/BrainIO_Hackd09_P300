@@ -1,6 +1,7 @@
 import numpy as np
 import scipy.io
 import glob
+import torch
 
 
 def assembleDataSet(l):
@@ -33,7 +34,7 @@ def get_list_data():
 
 def get_device():
     """ Retrieve device based on settings and availability. """
-    return torch.device("cuda:0" if torch.cuda.is_available() and TRAIN_ON_GPU else "cpu")
+    return torch.device("cuda:0" if torch.cuda.is_available()  else "cpu")
 
 
 def make_directory_for_run():
