@@ -16,8 +16,10 @@ for subject in range(5):
         # print(x[i])
         # print(x[i].shape)
 
-print(len(dataset['labels']))
-print(len(dataset['X']))
-print(dataset['X'][0])
+dataset['epoch_id'] = [i for i in range(len(dataset['labels'])) ]
+# print(dataset['epoch_id'][:])
+# print(len(dataset['labels']))
+# print(len(dataset['X']))
+# print(dataset['X'][0])
 # print(dataset['X'])
 # print(dataset['labels'])
