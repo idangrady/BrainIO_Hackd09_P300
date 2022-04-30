@@ -1,10 +1,10 @@
 %% Load all data, segmenting into each trial
 
-dat1 = load("S1.mat");
-dat2 =load("S2.mat");
-dat3 =load("S3.mat");
-dat4 =load("S4.mat");
-dat5 =load("S5.mat");
+dat1 = load("./Data/S1.mat");
+dat2 =load("./Data/S2.mat");
+dat3 =load("./Data/S3.mat");
+dat4 =load("./Data/S4.mat");
+dat5 =load("./Data/S5.mat");
 
 dat = {dat1,dat2,dat3,dat4,dat5};
 findat = {};
@@ -32,9 +32,8 @@ for indexs = 1:numel(dat)
     gbp.trig = nonzeros(gbp.trig);
     gbp.y = [];
     dat{indexs} = gbp; 
-   % findat.append(Result);
-    %fintar.append()
-    
 
 end
+
+save("data.mat",'dat');
 
