@@ -6,7 +6,7 @@ import torchvision
 import torchvision.transforms as transforms
 
 from Utilis import *
-# from .../dataLoadInDataset import *
+# from .../dataLoadInDataset import
 import numpy as np
 import matplotlib.pyplot as plt
 # %matplotlib inline
