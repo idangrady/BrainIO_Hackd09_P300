@@ -19,8 +19,8 @@ for indexs = 1:numel(dat)
     % Extract the elements of a at those indexes.
     indexes = find(c);
 
-    start_index  = [indexes; size(A, 1) + 1];
-    end_index = start_index + 125; % 0-500ms
+    start_index  = [indexes; size(A, 1) + 1] - 25 %100ms pre;
+    end_index = start_index + 100; % 400ms post trigger
     n  = numel(start_index) - 1;
     Result = cell(1, n);
     for k = 1:n
