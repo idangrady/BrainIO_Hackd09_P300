@@ -7,9 +7,10 @@ import random
 np.random.seed(0)
 random.seed(0)
 
-mat = scipy.io.loadmat('tom_data/data.mat')['dat'][0]
 
-# print(mat.shape)
+mat = scipy.io.loadmat('DataPreprocessing/data.mat')['dat'][0]
+
+print(mat.shape)
 
 def loadDataset(test_dataset_size = 500):
     dataset = {'sample_id':[],'labels':[], 'X':[]}
@@ -53,3 +54,34 @@ def loadDataset(test_dataset_size = 500):
     print("total number of targets: ", len([i for i in dataset['labels'] if i== 1]) ,"Number of targets in the testing set: ", len([dataset['labels'][i] for i in test_ids if dataset['labels'][i] == 1]) )
 
     return dataset, train_ids, test_ids, input_dims
+
+
+def getSignalPerCandidate():
+    dataset, train_ids, test_ids, input_dims= loadDataset()
+    y = np.array(dataset['labels'])
+    itemindex = np.where(y == 1)
+    itemindex = [int(x) for x in itemindex[0]]
+    true_signal = np.array([dataset['X'][x] for x in itemindex])
+
+    assert (true_signal.shape > 2)
+    return true_signal
+
+
+
+#
+# dataset, train_ids, test_ids, input_dims= loadDataset()
+# print(dataset.keys())
+# print(test_ids)
+# print(input_dims)
+# print(len(dataset['X']))
+# y = np.array(dataset['labels'])
+# itemindex = np.where(y==1)
+# print(type(itemindex))
+# print(itemindex[0])
+# itemindex = [int(x) for x in itemindex[0]]
+# print(len(itemindex))
+# print(type(itemindex))
+#
+# true_signal = np.array([dataset['X'][x] for x in itemindex])
+#
+# print(true_signal.shape)
