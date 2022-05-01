@@ -77,9 +77,15 @@ model = nn.Sequential(
 #         nn.init.xavier_uniform_(layer.weight)
 
 
+#========== hyperparameters (optuna)
+# lr, w_decay = 0.0001139448084577777, 2.472252240823343e-07 # TODO change
+# gamma = 74.55715021234711
+
+lr, w_decay = 1e-4, 0.0 # TODO change
+gamma = 0.0
 # ==== optimizer & loss function
 # lr, w_decay = 1e-3, 0.0 # TODO change
-lr, w_decay = 1e-4, 0.0 # TODO change
+# lr, w_decay = 1e-4, 0.0 # TODO change
 # lr, w_decay = 1e-2, 0.0 # TODO change
 optimizer = optim.Adam(model.parameters(), lr = lr, weight_decay= w_decay)
 # Loss = nn.BCEWithLogitsLoss()
@@ -135,7 +141,8 @@ for epoch in pbar:
     # loss = focal.focal_loss(minibatch_tensor_output, minibatch_tensor_labels.resize(minibatch_size), alpha=3)
     # print(minibatch_tensor_labels)
     # loss = focal.focal_loss(minibatch_tensor_output, minibatch_tensor_labels.resize(minibatch_size), alpha=3)
-    gamma = 50.0#75.0#50.0 # too little#10.0 too little #1.0 # to little #100.0 # too much
+    # gamma = 50.0#75.0#50.0 # too little#10.0 too little #1.0 # to little #100.0 # too much
+    # loss = focal.focal_loss(minibatch_tensor_output, minibatch_tensor_labels.resize(minibatch_size), alpha=1.0, gamma=gamma).mean()
     loss = -focal.focal_loss(minibatch_tensor_output, minibatch_tensor_labels.resize(minibatch_size), alpha=1.0, gamma=gamma).mean()
     # print(loss)
     losses.append(loss.detach())
@@ -155,7 +162,7 @@ for epoch in pbar:
         # print(test_tensor_labels[:10])
         difference = torch.abs(test_output_probas - test_tensor_labels).tolist()
         for d in difference:
-            if d[0] <= 0.5 :
+            if d[0] < 0.5 :
                 score += 1
     scores.append(score/len(test_ids))
 
@@ -173,7 +180,7 @@ with torch.no_grad() :
     print(test_tensor_labels[:10])
     difference = torch.abs(test_output_probas - test_tensor_labels).tolist()
     for d in difference:
-        if d[0] <= 0.5 :
+        if d[0] < 0.5 :
             score += 1
 
 # ========== Plots

@@ -98,7 +98,8 @@ def getScore(trial, lr, w_decay, gamma):
     losses = []
     scores = []
     # epochs = 10
-    epochs = 10000
+    # epochs = 10000
+    epochs = 5000
     # epochs = 1000
     # epochs = 200
     minibatch_size = 32
@@ -148,6 +149,7 @@ def getScore(trial, lr, w_decay, gamma):
         gamma = gamma#75.0#50.0 # too little#10.0 too little #1.0 # to little #100.0 # too much
         # gamma = 50.0#75.0#50.0 # too little#10.0 too little #1.0 # to little #100.0 # too much
         loss = -focal.focal_loss(minibatch_tensor_output, minibatch_tensor_labels.resize(minibatch_size), alpha=1.0, gamma=gamma).mean()
+        # loss = focal.focal_loss(minibatch_tensor_output, minibatch_tensor_labels.resize(minibatch_size), alpha=1.0, gamma=gamma).mean()
         # print(loss)
         losses.append(loss.detach())
         loss.backward()
@@ -166,7 +168,7 @@ def getScore(trial, lr, w_decay, gamma):
             # print(test_tensor_labels[:10])
             difference = torch.abs(test_output_probas - test_tensor_labels).tolist()
             for d in difference:
-                if d[0] <= 0.5 :
+                if d[0] < 0.5 :
                     score += 1
         scores.append(score/len(test_ids))
 
@@ -184,7 +186,7 @@ def getScore(trial, lr, w_decay, gamma):
     #     print(test_tensor_labels[:10])
     #     difference = torch.abs(test_output_probas - test_tensor_labels).tolist()
     #     for d in difference:
-    #         if d[0] <= 0.5 :
+    #         if d[0] < 0.5 :
     #             score += 1
 
     # # ========== Plots
@@ -216,7 +218,8 @@ sampler = optuna.samplers.TPESampler()
 study = optuna.create_study(sampler=sampler, direction='maximize')
 # study.optimize(objective, n_trials=100)
 # study.optimize(objective, n_trials=1, gc_after_trial=True)
-study.optimize(objective, n_trials=100, gc_after_trial=True)
+# study.optimize(objective, n_trials=100, gc_after_trial=True)
+study.optimize(objective, n_trials=20, gc_after_trial=True)
 # study.optimize(objective, n_trials=50, gc_after_trial=True)
 # study.optimize(objective, n_trials=2, gc_after_trial=True)
 joblib.dump(study, 'optuna_results.pkl')
