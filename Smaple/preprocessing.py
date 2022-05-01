@@ -6,17 +6,34 @@ import pandas as pd
 import random
 np.random.seed(0)
 random.seed(0)
+import mat73
 
+mat = mat73.loadmat('D:\github_\BrainIO_Hackd09_P300\DataPreprocessing\data_prepro.mat')['dat']
 
-mat = scipy.io.loadmat('D:\github_\BrainIO_Hackd09_P300\DataPreprocessing\data.mat')['dat'][0]
+print(mat[0].keys())
+# mat = scipy.io.loadmat('D:\github_\BrainIO_Hackd09_P300\DataPreprocessing\data_prepro.mat')['dat'][0]
 
-print(mat.shape)
+def convertto3D(data, shape):
+    return data.reshape(((shape)))
+
+def dloader_2():
+    participants = 5
+
+    x , y = [],[]
+    for par in range(participants):
+        (_,n, m) = np.array(mat[par]['dat']).shape
+        h = 28
+        ar = np.array(mat[par]['dat']).reshape((-1, n*m))
+
+        shape = -1, h , h,1  # len(mat[par]['trig'])
+        x.append(convertto3D(ar[:,:h*h], shape)), y.append(mat[par]['trig'][:h*h])
+    return x,y
 
 def loadDataset(test_dataset_size = 500):
     dataset = {'sample_id':[],'labels':[], 'X':[]}
     timestamp = 20
     for subject in range(5):
-        label, x = list(mat[subject][0][0])[1], list(mat[subject][0][0])[3][0]
+        label, x = list(mat[subject]['trig']), (mat[subject]['dat'])
         for i in range(len(label)):
             if len(x[i]) >= timestamp: # drop short erroneous samples!
                 dataset['labels'].append(label[i][0])
