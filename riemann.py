@@ -49,7 +49,8 @@ for i in range(len(train_labels)):
     if train_labels[i] == 1:
         sample_weights[i] = inbalance_weight
 
-model.fit(train_data, train_labels, np.array(sample_weights))
+model.fit(train_data, train_labels)
+# model.fit(train_data, train_labels, np.array(sample_weights))
 
 
 
