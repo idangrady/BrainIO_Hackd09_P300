@@ -1,17 +1,20 @@
-# import scipy.io
+import scipy.io
 import numpy as np
 import pandas as pd
 # import scipy as sc
 # from scipy.signal import decimate # TODO see later if needed the decimation step!! ===> Median step OK
 import random
-import mat73
+# import mat73
 
 np.random.seed(0)
 random.seed(0)
 
 
-# mat = scipy.io.loadmat('tom_data/data.mat')['dat'][0]
-data_dict = mat73.loadmat('data/data_prepro.mat')['dat']#[1]
+mat = scipy.io.loadmat('data/data_prepro_resampled.mat')['dat'][0]
+# print(len(mat))
+# print(mat[0])
+
+# data_dict = mat73.loadmat('data/data_prepro.mat')['dat']#[1]
 # data_dict = mat73.loadmat('data/data_prepro_resampled.mat')['dat']#[1]
 # print(data_dict)
 # print(len(data_dict))
@@ -28,17 +31,20 @@ data_dict = mat73.loadmat('data/data_prepro.mat')['dat']#[1]
 
 def loadDataset(test_dataset_size = 500):
     dataset = {'sample_id':[],'labels':[], 'X':[]}
-    verification_check = len( data_dict[0]['dat'][0]) # in theory 125 lines :
+    verification_check = len(list(mat[0][0][0])[3][0][0]) # in theory 25 lines :
+    # print(verification_check)
     for subject in range(5):
-        labels, x = data_dict[0]['trig'], data_dict[0]['dat']
         # print(labels, x[0])
         # print(x[0])
+        labels, x = list(mat[subject][0][0])[1], list(mat[subject][0][0])[3][0]
+        # print(labels, len(x), len(x[0]))
         for i in range(len(labels)):
             if len(x[i]) >= verification_check: # drop short erroneous samples!
                 # dataset['labels'].append(labels[i][0])
-                dataset['labels'].append(labels[i])
+                dataset['labels'].append(labels[i][0])
                 # print(len(x), len(x[0]))
                 dataset['X'].append(x[i])
+                # print(len(x[i]), len(x[i][0]))
                 # print(label[i][0])
                 # print(x[i])
                 # print(x[i].shape)
@@ -72,3 +78,5 @@ def loadDataset(test_dataset_size = 500):
     print("total number of targets: ", len([i for i in dataset['labels'] if i== 1]) ,"Number of targets in the testing set: ", len([dataset['labels'][i] for i in test_ids if dataset['labels'][i] == 1]) )
 
     return dataset, train_ids, test_ids, input_dims
+
+loadDataset()
