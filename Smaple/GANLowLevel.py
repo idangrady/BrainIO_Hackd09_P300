@@ -99,7 +99,7 @@ class GAN(pl.LightningModule):
             # Get prediction
             y_hat = self.discriminator(fake_img)
             y = torch.ones(real_imgs.size(0), 1)
-
+#
             g_loss = self.advarserial_loss(y_hat, y)
             log_dict = {"dictLoss": g_loss}
             return {"loss": g_loss, "progress_bar": log_dict, "log": log_dict}
